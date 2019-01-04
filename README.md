@@ -7,6 +7,8 @@ enables scrolling via holding the mouse button ("drag and drop" or
 demo](http://asvd.github.io/dragscroll/)). It has no dependencies and
 is written in vanilla JavaScript (which means it works anywhere).
 
+### Difference from original version
+It also supports touch events.
 
 ### Usage
 
