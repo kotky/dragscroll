@@ -2,7 +2,7 @@
  * @fileoverview dragscroll - scroll area by dragging
  * @version 0.0.8
  * 
- * @license MIT, see http://github.com/asvd/dragscroll
+ * @license MIT, see http://github.com/kotky/dragscroll
  * @copyright 2015 asvd <heliosframework@gmail.com> 
  */
 
@@ -21,6 +21,9 @@
     var mousemove = 'mousemove';
     var mouseup = 'mouseup';
     var mousedown = 'mousedown';
+    var touchmove = 'touchmove';
+    var touchup = 'touchend';
+    var touchdown = 'touchstart';
     var EventListener = 'EventListener';
     var addEventListener = 'add'+EventListener;
     var removeEventListener = 'remove'+EventListener;
@@ -32,8 +35,11 @@
             el = dragged[i++];
             el = el.container || el;
             el[removeEventListener](mousedown, el.md, 0);
+            el[removeEventListener](touchdown, el.md, 0);
             _window[removeEventListener](mouseup, el.mu, 0);
+            _window[removeEventListener](touchup, el.mu, 0);
             _window[removeEventListener](mousemove, el.mm, 0);
+            _window[removeEventListener](touchmove, el.mm, 0);
         }
 
         // cloning into array since HTMLCollection is updated dynamically
@@ -57,8 +63,32 @@
                     }, 0
                 );
 
+                (cont = el.container || el)[addEventListener](
+                    touchdown,
+                    cont.td = function(e) {
+                        if (e.targetTouches.length == 1) {
+                            var touch = e.targetTouches[0];
+                            if (!el.hasAttribute('nochilddrag') ||
+                                _document.elementFromPoint(
+                                    touch.pageX, touch.pageY
+                                ) == cont
+                            ) {
+                                pushed = 1;
+                                lastClientX = touch.clientX;
+                                lastClientY = touch.clientY;
+
+                                e.preventDefault();
+                            }
+                        }
+                    }, 0
+                );
+
                 _window[addEventListener](
                     mouseup, cont.mu = function() {pushed = 0;}, 0
+                );
+
+                _window[addEventListener](
+                    touchup, cont.tu = function() {pushed = 0;}, 0
                 );
 
                 _window[addEventListener](
@@ -72,6 +102,26 @@
                             if (el == _document.body) {
                                 (scroller = _document.documentElement).scrollLeft -= newScrollX;
                                 scroller.scrollTop -= newScrollY;
+                            }
+                        }
+                    }, 0
+                );
+
+                _window[addEventListener](
+                    touchmove,
+                    cont.tm = function(e) {
+                        e.preventDefault();
+                        if (e.targetTouches.length == 1) {
+                            var touch = e.targetTouches[0];
+                            if (pushed) {
+                                (scroller = el.scroller||el).scrollLeft -=
+                                    newScrollX = (- lastClientX + (lastClientX=touch.clientX));
+                                scroller.scrollTop -=
+                                    newScrollY = (- lastClientY + (lastClientY=touch.clientY));
+                                if (el == _document.body) {
+                                    (scroller = _document.documentElement).scrollLeft -= newScrollX;
+                                    scroller.scrollTop -= newScrollY;
+                                }
                             }
                         }
                     }, 0
