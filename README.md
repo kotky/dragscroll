@@ -8,7 +8,10 @@ demo](http://asvd.github.io/dragscroll/)). It has no dependencies and
 is written in vanilla JavaScript (which means it works anywhere).
 
 ### Difference from original version
+
 It also supports touch events.
+It will only drag if one finger is on the screen.
+Touch events aren't supported in IE, but there are still mouse events.
 
 ### Usage
 
