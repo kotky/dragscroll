@@ -9,9 +9,9 @@ is written in vanilla JavaScript (which means it works anywhere).
 
 ### Difference from original version
 
-It also supports touch events.
-It will only drag if one finger is on the screen.
-Touch events aren't supported in IE, but there are still mouse events.
+- It also supports touch events.
+- It will only drag if one finger is on the screen.
+- Touch events aren't supported in IE, but there are still mouse events.
 
 ### Usage
 
@@ -60,7 +60,3 @@ for its subchildren. This can be usefull, if you want to enable the
 scrolling the area by dragging its empty space, but keep the
 opportunity to select the text (see
 [example](http://asvd.github.io/jailed/demos/web/process/)).
-
--
-
-Follow me on twitter: https://twitter.com/asvd0
